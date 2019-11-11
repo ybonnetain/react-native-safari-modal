@@ -1,0 +1,16 @@
+image: $ARTIFACTORY_REGISTRY/docker/build/build-alpine-node:2.0.6
+
+before_script:
+  - touch ~/.npmrc && printf "https-proxy=\nstrict-ssl=false\nregistry=https://$ARTIFACTORY_REGISTRY/artifactory/api/npm/npm/\n_auth=$ARTIFACTORY_TOKEN\nemail=svc_gestionclientele@groupemutuel.ch\nalways-auth=true" > ~/.npmrc
+
+stages:
+  - publish
+
+publish:
+  stage: publish
+  script:
+    - npm publish --registry https://$ARTIFACTORY_REGISTRY/artifactory/api/npm/npm-gce
+  when: manual
+  only:
+    - tags
+
