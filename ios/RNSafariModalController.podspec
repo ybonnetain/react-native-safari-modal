@@ -4,7 +4,7 @@ package = JSON.parse(File.read(File.join(__dir__, "..", "package.json")))
 version = package['version']
 
 source = { :git => "https://github.com/ybonnetain/react-native-safari-modal.git" }
-source[:tag] = "v#{version}"
+source[:tag] = "#{version}"
 
 Pod::Spec.new do |s|
   s.name         = "RNSafariModalController"
@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.author       = { "author" => "yann.bonnetain@gmail.com" }
   s.platform     = :ios, "8.0"
   s.source       = source
-  s.source_files = "RNSafariModalController/**/*.{h,m}"
+  s.source_files = "**/*.{h,m}"
   s.requires_arc = true
 
   s.dependency "React"
