@@ -1,7 +1,7 @@
 
 {
   "name": "react-native-safari-modal",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "RN library to open a URL in a modal SafariViewController. Defaults to Linking.openURL()",
   "repository": {
     "type": "git",
