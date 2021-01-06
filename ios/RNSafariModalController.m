@@ -1,55 +1,43 @@
+#import <React/RCTUtils.h>
 
 #import "RNSafariModalController.h"
 
 @implementation RNSafariModalController
 
-
-#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
-
-
-@synthesize bridge = _bridge;
-
-
 +(BOOL)requiresMainQueueSetup {
   return YES;
 }
 
+-(dispatch_queue_t)methodQueue {
+  return dispatch_get_main_queue();
+}
 
 RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(isAvailable:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-  if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
+  if (@available(iOS 9.0, *)) {
     resolve([NSNumber numberWithBool:YES]);
-    return;
+  } else {
+    resolve([NSNumber numberWithBool:NO]);
   }
-  resolve([NSNumber numberWithBool:NO]);
 }
 
-RCT_EXPORT_METHOD(openURL:(NSString *)urlString) {
-  NSURL *url = [[NSURL alloc] initWithString:urlString];
-  
-  dispatch_async(dispatch_get_main_queue(), ^{
-    
-    UIViewController *rootViewController = [[[UIApplication sharedApplication] delegate] window].rootViewController;
-    while(rootViewController.presentedViewController) {
-      rootViewController = rootViewController.presentedViewController;
-    }
-    
+RCT_EXPORT_METHOD(openURL:(id)urlString) {
+  if (@available(iOS 9.0, *)) {
+    NSURL *url = [[NSURL alloc] initWithString:urlString];
+
+    UIViewController *rootViewController = RCTPresentedViewController();
+
     SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:safariViewController];
-    
-    [navigationController setNavigationBarHidden:YES animated:NO];
     safariViewController.delegate = self;
-    
-    [rootViewController presentViewController:navigationController animated:YES completion:nil];
-  });
+
+    [rootViewController presentViewController:safariViewController animated:YES completion:nil];
+  }
 }
 
 RCT_EXPORT_METHOD(close) {
-  dispatch_async(dispatch_get_main_queue(), ^{
-    UIViewController *rootViewController = [[[UIApplication sharedApplication] delegate] window].rootViewController;
-    [rootViewController dismissViewControllerAnimated:YES completion:nil];
-  });
+  UIViewController *rootViewController = RCTPresentedViewController();
+  [rootViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
