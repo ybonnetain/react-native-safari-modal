@@ -16,9 +16,9 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(isAvailable:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
   if (@available(iOS 9.0, *)) {
-    resolve([NSNumber numberWithBool:YES]);
+    resolve(@YES);
   } else {
-    resolve([NSNumber numberWithBool:NO]);
+    resolve(@NO);
   }
 }
 
