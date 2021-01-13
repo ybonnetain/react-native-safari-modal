@@ -3,7 +3,7 @@ import { NativeModules, Platform, Linking } from 'react-native';
 const { RNSafariModalController } = NativeModules;
 
 const module = {
-    openURL: url => {
+    openURL: (url, modal = true) => {
         if (!(typeof url === 'string')) {
             return;
         }
@@ -13,7 +13,7 @@ const module = {
         if (Platform.OS === 'ios') {
             RNSafariModalController.isAvailable()
             .then(
-                status => status ? RNSafariModalController.openURL(url) : Linking.openURL(url).catch(),
+                status => status ? RNSafariModalController.openURL(url, modal) : Linking.openURL(url).catch(),
             );
             return;
         }

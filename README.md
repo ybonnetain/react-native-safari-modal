@@ -1,9 +1,12 @@
 
 # react-native-safari-modal
 
-On iOS, opens a URL in SafariViewController presented in a modal
+On iOS, opens a URL in SafariViewController with presentation options
 
-Before iOS 9 and Android it defaults to RN `Linking.openURL()`
+- PageSheet which is the default
+- Push on the VC stack
+
+Before `iOS9` and on `Android` it defaults to RN `Linking.openURL()`
 
 ## Getting started
 
@@ -27,6 +30,12 @@ Else ..
 3. In XCode, in the project navigator, select your project. Add `libRNSafariModalController.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
 4. Run your project (`Cmd+R`)<
 
+
+## Declaration
+
+```typescript
+openURL: (url: string, modal: boolean) => void;
+```
 
 ## Usage
 ```javascript

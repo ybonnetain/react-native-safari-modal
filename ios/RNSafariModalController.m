@@ -22,7 +22,7 @@ RCT_EXPORT_METHOD(isAvailable:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromi
   }
 }
 
-RCT_EXPORT_METHOD(openURL:(id)urlString) {
+RCT_EXPORT_METHOD(openURL:(id)urlString modalize:(BOOL)modal) {
   if (@available(iOS 9.0, *)) {
     NSURL *url = [[NSURL alloc] initWithString:urlString];
 
@@ -30,7 +30,9 @@ RCT_EXPORT_METHOD(openURL:(id)urlString) {
 
     SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
     safariViewController.delegate = self;
-
+    if (modal) {
+      safariViewController.modalPresentationStyle = UIModalPresentationPageSheet;
+    }
     [rootViewController presentViewController:safariViewController animated:YES completion:nil];
   }
 }
