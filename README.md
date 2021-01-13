@@ -13,8 +13,6 @@ Before iOS 9 and Android it defaults to RN `Linking.openURL()`
 
 RN > 0.61 automatic install
 
-TODO: for automatic installation, podspec should be in project root
-
 Else ..
 
 `$ react-native link react-native-safari-modal`
