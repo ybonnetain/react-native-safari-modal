@@ -1,6 +1,10 @@
 #import <React/RCTUtils.h>
+#import <React/RCTBridgeModule.h>
 
-#import "RNSafariModalController.h"
+@import SafariServices;
+
+@interface RNSafariModalController : NSObject <RCTBridgeModule, SFSafariViewControllerDelegate>
+@end
 
 @implementation RNSafariModalController
 
@@ -14,32 +18,30 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(isAvailable:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(isAvailable) {
   if (@available(iOS 9.0, *)) {
-    resolve(@YES);
+    return @YES;
   } else {
-    resolve(@NO);
+    return @NO;
   }
 }
 
-RCT_EXPORT_METHOD(openURL:(id)urlString modalize:(BOOL)modal) {
+RCT_EXPORT_METHOD(openURL:(NSString *)urlString modalize:(BOOL)modal) {
   if (@available(iOS 9.0, *)) {
     NSURL *url = [[NSURL alloc] initWithString:urlString];
-
-    UIViewController *rootViewController = RCTPresentedViewController();
-
+    UIViewController *currentVC = RCTPresentedViewController();
     SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
     safariViewController.delegate = self;
     if (modal) {
       safariViewController.modalPresentationStyle = UIModalPresentationPageSheet;
     }
-    [rootViewController presentViewController:safariViewController animated:YES completion:nil];
+    [currentVC presentViewController:safariViewController animated:YES completion:nil];
   }
 }
 
 RCT_EXPORT_METHOD(close) {
-  UIViewController *rootViewController = RCTPresentedViewController();
-  [rootViewController dismissViewControllerAnimated:YES completion:nil];
+  UIViewController *currentVC = RCTPresentedViewController();
+  [currentVC dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
