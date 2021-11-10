@@ -20,9 +20,9 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(isAvailable) {
   if (@available(iOS 9.0, *)) {
-    return @YES
+    return @YES;
   } else {
-    return @NO
+    return @NO;
   }
 }
 
