@@ -12,10 +12,8 @@ const module = {
         }
         if (Platform.OS === 'ios') {
             RNSafariModalController.isAvailable()
-            .then(
-                status => status ? RNSafariModalController.openURL(url, modal) : Linking.openURL(url).catch(),
-            );
-            return;
+                ? RNSafariModalController.openURL(url, modal)
+                : Linking.openURL(url).catch()
         }
         Linking.openURL(url).catch();
     }
